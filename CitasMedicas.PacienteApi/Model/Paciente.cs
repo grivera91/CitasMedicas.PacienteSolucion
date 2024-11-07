@@ -11,9 +11,11 @@ namespace CitasMedicas.PacienteApi.Model
         [ForeignKey("Usuario")]
         public int IdUsuario { get; set; }  // Clave foránea que referencia a la tabla Usuario
 
-        [Required]
-        [MaxLength(50)]
-        public string NumeroHistoriaClinica { get; set; }  // Número único de la historia clínica
+        [MaxLength(8)]        
+        public required string CodigoPaciente { get; set; }
+
+        [MaxLength(8)]        
+        public required string CodigoHistoriaClinica { get; set; }
 
         [ForeignKey("TipoSangre")]
         public int? IdTipoSangre { get; set; }  // Clave foránea que referencia a la tabla TipoSangre

@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using CitasMedicas.PacienteApi.Data;
 using Microsoft.EntityFrameworkCore;
+using CitasMedicas.PacienteApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +26,25 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add services to the container.
+// Configurar Autenticación con JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"], // Configurar el emisor en appsettings.json
+            ValidAudience = builder.Configuration["Jwt:Audience"], // Configurar la audiencia en appsettings.json
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // Configurar la clave de firma en appsettings.json
+        };
+    });
 
+builder.Services.AddScoped<CorrelativoService>();
+
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -42,6 +63,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAllOrigins");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
