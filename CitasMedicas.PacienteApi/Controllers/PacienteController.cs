@@ -21,7 +21,7 @@ namespace CitasMedicas.PacienteApi.Controllers
             _correlativoService = correlativoService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> CrearPaciente([FromBody] PacienteCreateRequestDto pacienteCreateRequestDto)
         {
@@ -94,7 +94,7 @@ namespace CitasMedicas.PacienteApi.Controllers
             }            
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPacientePorId(int id)
         {
@@ -123,7 +123,7 @@ namespace CitasMedicas.PacienteApi.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PacienteCreateResponseDto>>> ListarPacientes()
         {
@@ -152,7 +152,7 @@ namespace CitasMedicas.PacienteApi.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPatch("{id}")]
         public async Task<IActionResult> EditarPaciente(int id, [FromBody] PacienteUpdateRequestDto pacienteUpdateRequestDto)
         {
